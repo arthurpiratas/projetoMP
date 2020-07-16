@@ -26,7 +26,7 @@ class GerenciadorDados:
         listaNomeProduto.clear()
 
         for produto in listaProduto:
-            listaNomeProduto.append(produto['nome'])
+            listaNomeProduto.append(produto['nome'].upper())
         
         return listaNomeProduto
    

@@ -17,19 +17,19 @@ class Validadores:
     
     #Função para informar erro do valor
     def MensagemPesoFloat(self, boleano):
-        if(boleano == False): 
+        if(boleano == True): 
             return "O Campo de Peso deve ser um numero real ou inteiro"
    
     #Função para verificar se um nome já foi cadastrado
     def VerificaNomeProdutoExite(self, nome, listaNome):
-        if nome in listaNome: 
+        if (nome.upper()) in listaNome: 
             return True
         else: 
             return False
 
     #Função para informar erro nome já existe/cadastrado
-    def MensagemPesoFloat(self, boleano):
-        if(boleano == False): 
+    def MensagemNomeExiste(self, boleano):
+        if(boleano == True): 
             return "O Nome do Produto já foi cadastrado"
 
     def VerificaNomeVazio(self, nome):
@@ -40,7 +40,7 @@ class Validadores:
     
     #Função para informar que o campo não foi preenchido
     def MensagemPesoFloat(self, boleano):
-        if(boleano == False): 
+        if(boleano == True): 
             return "O Nome do Produto já foi cadastrado"
 
     #verfica se a lista possui registro
