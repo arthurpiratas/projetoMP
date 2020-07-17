@@ -78,3 +78,23 @@ for nome in listaNome:
     print(nome)
 
 print('----------------')
+
+if(validador.VerificaNomeProdutoExite(("Refrigerante".upper()), listaNome)):
+    produto3 = controleDados.buscaProduto("Refrigerante", listaProdutos)
+    controleDados.removeProduto(produto3, listaProdutos)
+else: 
+    validador.MensagemNomeExiste(True)
+
+
+listaNome = GerenciadorDados.retornaListaNomeProduto(controleDados, listaProdutos, listaNome)
+
+
+print('----------------')
+
+for produtos in listaProdutos:
+    print(f"Nome {produtos['nome']}, {produtos['preco']}")
+
+print('----------------')
+
+for nome in listaNome:
+    print(nome)

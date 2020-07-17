@@ -19,7 +19,7 @@ class GerenciadorDados:
     def buscaProduto(self, nomeProduto, listaProduto):
         for cont in range(0,len(listaProduto)):
             if(nomeProduto == listaProduto[cont]['nome']):
-                return   {'nome': listaProduto[cont]['nome'], 'UN': listaProduto[cont]['UN'], 'preco': listaProduto[cont]['preco'], 'categoria': listaProduto[cont]['categoria'], 'peso': listaProduto[cont]['peso']}
+                return   {'nome': listaProduto[cont]['nome'], 'peso': listaProduto[cont]['peso'], 'UN': listaProduto[cont]['UN'], 'preco': listaProduto[cont]['preco'], 'categoria': listaProduto[cont]['categoria']}
 
     # retorna lista de nome de produtos 
     def retornaListaNomeProduto(self, listaProduto, listaNomeProduto):
