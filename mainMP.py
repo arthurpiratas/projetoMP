@@ -5,6 +5,16 @@ from crudMP import GerenciadorDados
 import json
 from tkinter import *
 
+# Criar os objetos de validação e controle de dados
+
+validador = Validadores()
+controleDados = GerenciadorDados()
+listaProdutos = controleDados.ler_json()
+listaNome = list()
+listaNome = GerenciadorDados.retornaListaNomeProduto(controleDados, listaProdutos, listaNome)
+
+
+
 # Criando frame Cadastro Produto 
 
 class CadastroProduto(Frame): 
@@ -48,8 +58,8 @@ class CadastroProduto(Frame):
         self.entradaNome = Entry(self, textvariable = self.texto_nome, font = "Arial 15") 
         self.entradaPeso = Entry(self, textvariable = self.texto_peso, font = "Arial 15") 
         self.entradaPreco = Entry(self, textvariable = self.texto_valor, font = "Arial 15")
-        self.spinboxUN = Spinbox(self, values = ('CM', 'CX', 'RL', 'KG', 'LT', 'M3'), wrap = True, state = 'readonly', font = "Arial 15")
-        self.spinboxCategoria = Spinbox(self, values = ('Alimentos', 'Bebidas', 'Carnes', 'Frios', 'Frutas', 'Higiene', 'Legumes',  'Limpeza', 'Padaria', 'Verdura', 'Outros'), wrap = True, state = 'readonly', font = "Arial 15")
+        self.spinboxUN = Spinbox(self, values = ('CM', 'CX', 'RL', 'KG', 'LT', 'M3'), wrap = True, state = 'readonly', font = "Arial 14")
+        self.spinboxCategoria = Spinbox(self, values = ('Alimentos', 'Bebidas', 'Carnes', 'Frios', 'Frutas', 'Higiene', 'Legumes',  'Limpeza', 'Padaria', 'Verdura', 'Outros'), wrap = True, state = 'readonly', font = "Arial 14")
 
         # Definir Botão
 
@@ -60,17 +70,17 @@ class CadastroProduto(Frame):
 
         self.tituloFrame.grid(row = 0, column = 1)
 
-        self.nomeProduto.grid(row = 1, column = 0)
-        self.pesoProduto.grid(row = 2, column = 0)
-        self.unPedido.grid(row = 3, column = 0)
-        self.preco.grid(row = 4, column = 0)
-        self.categoria.grid(row = 5, column = 0)
+        self.nomeProduto.grid(row = 1, column = 0, sticky = W)
+        self.pesoProduto.grid(row = 2, column = 0, sticky = W)
+        self.unPedido.grid(row = 3, column = 0, sticky = W)
+        self.preco.grid(row = 4, column = 0, sticky = W)
+        self.categoria.grid(row = 5, column = 0, sticky = W)
 
-        self.entradaNome.grid(row = 1, column = 1)
-        self.entradaPeso.grid(row = 2, column = 1)
-        self.spinboxUN.grid(row = 3, column = 1)
-        self.entradaPreco.grid(row = 4, column = 1)
-        self.spinboxCategoria.grid(row = 5, column = 1)
+        self.entradaNome.grid(row = 1, column = 1, sticky = E)
+        self.entradaPeso.grid(row = 2, column = 1, sticky = E)
+        self.spinboxUN.grid(row = 3, column = 1, sticky = E)
+        self.entradaPreco.grid(row = 4, column = 1, sticky = E)
+        self.spinboxCategoria.grid(row = 5, column = 1, sticky = E)
 
         self.mensagemNomeVazio.grid(row = 6, column = 0)
         self.mensagemValorPeso.grid(row = 7, column = 0)
@@ -85,6 +95,7 @@ class CadastroProduto(Frame):
     #função para salvar produto na lista
     def salvar(self):
         print("Salvou")
+        
     
     #função para limpar campos
     def limpar(self):
@@ -143,22 +154,25 @@ class ConsultaProduto(Frame):
 
         self.tituloFrame.grid(row = 0, column = 1)
 
-        self.nomeProduto.grid(row = 1, column = 0)
-        self.pesoProduto.grid(row = 2, column = 0)
-        self.unPedido.grid(row = 3, column = 0)
-        self.preco.grid(row = 4, column = 0)
-        self.categoria.grid(row = 5, column = 0)
+        self.nomeProduto.grid(row = 1, column = 0, sticky = W)
+        self.pesoProduto.grid(row = 2, column = 0, sticky = W)
+        self.unPedido.grid(row = 3, column = 0, sticky = W)
+        self.preco.grid(row = 4, column = 0, sticky = W)
+        self.categoria.grid(row = 5, column = 0, sticky = W)
 
-        self.entradaNome.grid(row = 1, column = 1)
-        self.entradaPeso.grid(row = 2, column = 1)
-        self.entradaUN.grid(row = 3, column = 1)
-        self.entradapreco.grid(row = 4, column = 1)
-        self.entradaCategoria.grid(row = 5, column = 1)
+        self.entradaNome.grid(row = 1, column = 1, sticky = E)
+        self.entradaPeso.grid(row = 2, column = 1, sticky = E)
+        self.entradaUN.grid(row = 3, column = 1, sticky = E)
+        self.entradapreco.grid(row = 4, column = 1, sticky = E)
+        self.entradaCategoria.grid(row = 5, column = 1, sticky = E)
         
         self.listaBox.grid(row = 6 , column = 0)
 
         self.botaoExcluir.grid(row = 6, column = 1)
         self.botaoSelecionar.grid(row = 6, column = 2)
+
+        self.atualizarListBox()
+        
 
          
 
@@ -176,6 +190,13 @@ class ConsultaProduto(Frame):
         self.texto_valor.set('')
         self.texto_UN.set('')
         self.texto_categoria.set('')
+        self.atualizarListBox()
+    
+    def atualizarListBox(self):
+        self.listaBox.delete(0, END)
+        global listaNome
+        for nome in listaNome:
+            self.listaBox.insert(END, nome)  
 
 # Criando função para chamar a tela de cadastro produto: 
 
@@ -191,6 +212,8 @@ def AparecerCadastroProduto():
 # Criando função para chamar a tela de cadastro produto: 
 
 def AparecerConsultaProduto(): 
+    global listaNome 
+    listaNome  = GerenciadorDados.retornaListaNomeProduto(controleDados, listaProdutos, listaNome)
     frameCadastroProduto.grid_forget()
     frameConsultaProduto.limpar()
     label_imagem.grid_forget()
@@ -208,6 +231,8 @@ def AparecerMenuInicial():
     labelAux2.grid(row=1,column=1)
     label_imagem.grid(row=3,column=1, sticky = "nsew")
     labelAux3.grid(row=2,column=0)
+
+
 
 # Definindo propiedades do layout inicial
 

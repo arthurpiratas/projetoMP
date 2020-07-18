@@ -39,7 +39,7 @@ class Validadores:
             return False
     
     #Função para informar que o campo não foi preenchido
-    def MensagemPesoFloat(self, boleano):
+    def MensagemCampoNaoFoiPreenchido(self, boleano):
         if(boleano == True): 
             return "O Nome do Produto já foi cadastrado"
 
