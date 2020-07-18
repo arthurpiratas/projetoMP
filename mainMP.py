@@ -10,9 +10,13 @@ from tkinter import messagebox
 
 validador = Validadores()
 controleDados = GerenciadorDados()
-listaProdutos = controleDados.ler_json()
+listaProdutos = list()
 listaNome = list()
-listaNome = GerenciadorDados.retornaListaNomeProduto(controleDados, listaProdutos, listaNome)
+try:
+    listaProdutos = controleDados.ler_json()
+    listaNome = GerenciadorDados.retornaListaNomeProduto(controleDados, listaProdutos, listaNome)
+except: 
+    print("Sem registros")
 
 
 
@@ -300,8 +304,18 @@ def AparecerMenuInicial():
     labelAux2.grid(row=1,column=1)
     label_imagem.grid(row=3,column=1, sticky = "nsew")
     labelAux3.grid(row=2,column=0)
+    global listaProdutos
+    controleDados.escrever_json(listaProdutos)
 
 
+# Criar função para sair da Aplicação
+
+def sairAplicacao():
+    controleDados.escrever_json(listaProdutos)
+    TelaPrincipal.destroy()
+
+def disable_event():
+    pass
 
 # Definindo propiedades do layout inicial
 
@@ -328,6 +342,7 @@ opcaoMenu = Menu(menuPrincipal, tearoff = 0)
 opcaoMenu.add_command(label = "Cadastrar Produto", command = AparecerCadastroProduto)
 opcaoMenu.add_command(label = "Consultar Produto", command = AparecerConsultaProduto)
 opcaoMenu.add_command(label = "Menu Inicial",  command = AparecerMenuInicial)
+opcaoMenu.add_command(label = "Sair",  command = sairAplicacao)
 
 # Adcionando os menus do opcaoMenu no Menu de Opção Produto
 
@@ -347,5 +362,7 @@ labelAux2.grid(row=1,column=1)
 label_imagem.grid(row=3,column=1, sticky = "nsew")
 labelAux3.grid(row=2,column=0)
 
+TelaPrincipal.protocol("WM_DELETE_WINDOW", disable_event)
 TelaPrincipal.mainloop()
+
 

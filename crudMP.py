@@ -7,6 +7,10 @@ class GerenciadorDados:
         with open('meu_arquivo.json', 'r', encoding='utf-8') as f: 
             return  json.load(f)
 
+    def escrever_json(self, lista):
+        with open('meu_arquivo.json', 'w') as f:
+            json.dump(lista, f)
+
     #Função para inserir produto na lista
     def insereProduto(self, produto, listaProdutos ):
         listaProdutos.append(produto)
