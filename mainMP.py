@@ -83,10 +83,8 @@ class CadastroProduto(Frame):
         self.entradaPreco.grid(row = 4, column = 1, sticky = E)
         self.spinboxCategoria.grid(row = 5, column = 1, sticky = E)
 
-        self.mensagemNomeVazio.grid(row = 6, column = 0)
-        self.mensagemValorPeso.grid(row = 7, column = 0)
-        self.mensagemValorPreco.grid(row = 8, column = 0)
-        self.mensagemNomeExiste.grid(row = 9, column = 0)
+        self.mensagemNomeVazio.grid(row = 7, column = 0)
+        self.mensagemNomeExiste.grid(row = 8, column = 0)
 
         self.botaoSalvar.grid(row = 10, column = 0, sticky = W)
         self.botaoLimpar.grid(row = 10, column = 1, sticky = E)
@@ -97,17 +95,18 @@ class CadastroProduto(Frame):
     def salvar(self):
 
         try:
-            global listaProdutos
+            global listaProdutos, listaNome
             produto = {}
 
             if(validador.VerificaNomeVazio(self.texto_nome.get())):
                 self.texto_NomeVazio.set(validador.MensagemCampoNaoFoiPreenchido(True))
             elif(validador.validaValorFloat(self.texto_peso.get())):
-                self.mensagemValorPeso.set(validador.MensagemPesoFloat(True))
+                self.texto_ErroValor.set(validador.MensagemPesoFloat(True))
             elif(validador.validaValorFloat(self.texto_valor.get())):
-                self.mensagemValorPreco(validador.MensagemValorFloat(True))
+                self.texto_ErroPeso.set(validador.MensagemValorFloat(True))
+            elif(validador.VerificaNomeProdutoExite(self.texto_nome.get(), listaNome)):
+                self.texto_NomeJaExiste.set(validador.MensagemNomeExiste(True))
             else:
-                #self.mensagemNomeExiste = Label(self, textvariable = self.texto_ErroValor, fg = 'red')
                 produto['nome'] = str(self.texto_nome.get())
                 produto['peso'] = float(self.texto_peso.get())
                 produto['UN'] = str(self.spinboxUN.get())
@@ -115,7 +114,9 @@ class CadastroProduto(Frame):
                 produto['categoria'] = str(self.spinboxCategoria.get())
         
                 controleDados.insereProduto(produto, listaProdutos)
+                listaNome  = GerenciadorDados.retornaListaNomeProduto(controleDados, listaProdutos, listaNome)
                 self.limpar()
+                self.limparMensagemErro()
                 messagebox.showinfo('Info','Produto Cadastrado')
         
         except ValueError:
@@ -128,6 +129,12 @@ class CadastroProduto(Frame):
         self.texto_nome.set('')
         self.texto_peso.set('')
         self.texto_valor.set('')
+    
+    def limparMensagemErro(self):
+        self.texto_NomeVazio.set('')
+        self.texto_ErroPeso.set('')
+        self.texto_NomeJaExiste.set('')
+        self.texto_NomeVazio.set('')
          
 
 # Criando Frame Consulta Produto
@@ -264,6 +271,7 @@ class ConsultaProduto(Frame):
 def AparecerCadastroProduto(): 
     frameConsultaProduto.grid_forget()
     frameCadastroProduto.limpar()
+    frameCadastroProduto.limparMensagemErro()
     label_imagem.grid_forget()
     labelAux1.grid_forget()
     labelAux2.grid_forget()
