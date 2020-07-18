@@ -1,0 +1,17 @@
+[
+    {
+        "nome": "Refrigerante",
+        "peso": 2.0, 
+        "UN": "LT",
+        "preco": 5.00, 
+        "categoria": "Bebida"
+    },
+    {
+        "nome": "Arroz",
+        "peso": 2.0, 
+        "UN": "KG",
+        "preco": 5.00, 
+        "categoria": "Bebida"
+    }
+
+]

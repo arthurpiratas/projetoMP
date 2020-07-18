@@ -18,7 +18,7 @@ class GerenciadorDados:
     #Função para buscar produto
     def buscaProduto(self, nomeProduto, listaProduto):
         for cont in range(0,len(listaProduto)):
-            if(nomeProduto == listaProduto[cont]['nome']):
+            if(nomeProduto.upper() == listaProduto[cont]['nome'].upper()):
                 return   {'nome': listaProduto[cont]['nome'], 'peso': listaProduto[cont]['peso'], 'UN': listaProduto[cont]['UN'], 'preco': listaProduto[cont]['preco'], 'categoria': listaProduto[cont]['categoria']}
 
     # retorna lista de nome de produtos 
