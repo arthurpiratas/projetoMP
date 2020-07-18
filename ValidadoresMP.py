@@ -41,7 +41,7 @@ class Validadores:
     #Função para informar que o campo não foi preenchido
     def MensagemCampoNaoFoiPreenchido(self, boleano):
         if(boleano == True): 
-            return "O Nome do Produto já foi cadastrado"
+            return "O Nome do Produto não pode ser vazio"
 
     #verfica se a lista possui registro
     def VerificaListaVazia(self, listaProduto):

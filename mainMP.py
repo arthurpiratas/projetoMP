@@ -4,6 +4,7 @@ from ValidadoresMP import Validadores
 from crudMP import GerenciadorDados
 import json
 from tkinter import *
+from tkinter import messagebox
 
 # Criar os objetos de validação e controle de dados
 
@@ -49,10 +50,10 @@ class CadastroProduto(Frame):
 
         # Definir Label Mensagens de Erro
 
-        self.mensagemNomeVazio = Label(self, textvariable = self.texto_NomeVazio)
-        self.mensagemValorPeso = Label(self, textvariable = self.texto_NomeJaExiste)
-        self.mensagemValorPeso = Label(self, textvariable = self.texto_ErroPeso)
-        self.mensagemNomeExiste = Label(self, textvariable = self.texto_ErroValor)
+        self.mensagemNomeVazio = Label(self, textvariable = self.texto_NomeVazio, fg = 'red')
+        self.mensagemValorPeso = Label(self, textvariable = self.texto_ErroPeso,fg = 'red')
+        self.mensagemValorPreco = Label(self, textvariable = self.texto_ErroValor, fg = 'red')
+        self.mensagemNomeExiste = Label(self, textvariable = self.texto_NomeJaExiste, fg = 'red')
 
         # Definir Entry 
         self.entradaNome = Entry(self, textvariable = self.texto_nome, font = "Arial 15") 
@@ -84,7 +85,7 @@ class CadastroProduto(Frame):
 
         self.mensagemNomeVazio.grid(row = 6, column = 0)
         self.mensagemValorPeso.grid(row = 7, column = 0)
-        self.mensagemValorPeso.grid(row = 8, column = 0)
+        self.mensagemValorPreco.grid(row = 8, column = 0)
         self.mensagemNomeExiste.grid(row = 9, column = 0)
 
         self.botaoSalvar.grid(row = 10, column = 0, sticky = W)
@@ -94,7 +95,32 @@ class CadastroProduto(Frame):
 
     #função para salvar produto na lista
     def salvar(self):
-        print("Salvou")
+
+        try:
+            global listaProdutos
+            produto = {}
+
+            if(validador.VerificaNomeVazio(self.texto_nome.get())):
+                self.texto_NomeVazio.set(validador.MensagemCampoNaoFoiPreenchido(True))
+            elif(validador.validaValorFloat(self.texto_peso.get())):
+                self.mensagemValorPeso.set(validador.MensagemPesoFloat(True))
+            elif(validador.validaValorFloat(self.texto_valor.get())):
+                self.mensagemValorPreco(validador.MensagemValorFloat(True))
+            else:
+                #self.mensagemNomeExiste = Label(self, textvariable = self.texto_ErroValor, fg = 'red')
+                produto['nome'] = str(self.texto_nome.get())
+                produto['peso'] = float(self.texto_peso.get())
+                produto['UN'] = str(self.spinboxUN.get())
+                produto['preco'] = float(self.texto_valor.get())
+                produto['categoria'] = str(self.spinboxCategoria.get())
+        
+                controleDados.insereProduto(produto, listaProdutos)
+                self.limpar()
+                messagebox.showinfo('Info','Produto Cadastrado')
+        
+        except ValueError:
+            messagebox.showinfo('Info','O valor deve ser numérico')
+        
         
     
     #função para limpar campos
@@ -182,24 +208,34 @@ class ConsultaProduto(Frame):
          
 
     #função para selecionar produto na listbox e preencher um dicionário e formulário
-    def selecionar(self):
-        nome = (str(self.listaBox.get(ACTIVE)))
-        produto = {}
-        global listaProdutos
-        produto = controleDados.buscaProduto(nome, listaProdutos)
-        self.preencheCampo(produto)
+    def selecionar(self): 
+        try:
+            nome = (str(self.listaBox.get(ACTIVE)))
+            produto = {}
+            global listaProdutos
+            produto = controleDados.buscaProduto(nome, listaProdutos)
+            self.preencheCampo(produto)
+        except:
+            messagebox.showinfo('Info','Não existe Produto a ser selecionado!')
+        
     
     #função para excluir item selecionado da listbox
     def excluir(self):
-        nome = (str(self.listaBox.get(ACTIVE)))
-        produto = {}
-        global listaProdutos
-        produto = controleDados.buscaProduto(nome, listaProdutos)
-        produto = controleDados.removeProduto(produto, listaProdutos)
-        self.limpar()
+        try:
+            nome = (str(self.listaBox.get(ACTIVE)))
+            produto = {}
+            global listaProdutos
+            produto = controleDados.buscaProduto(nome, listaProdutos)
+            controleDados.removeProduto(produto, listaProdutos)
+            self.limpar()
+            messagebox.showinfo('Info','Produto ' + produto['nome'] + ' excluido!')
+        except: 
+            messagebox.showinfo('Info','Não existe Produto a ser excluido!')
+        
     
     #função para limpar os campos do formulários
     def limpar(self):
+       
         self.texto_nome.set('')
         self.texto_peso.set('')
         self.texto_valor.set('')
